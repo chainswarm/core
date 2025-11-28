@@ -12,6 +12,27 @@ from chainswarm_core.observability.logging import (
 from chainswarm_core.observability.metrics import get_metrics_registry
 
 
+def log_errors(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            logger.error(
+                f"Error in {func.__qualname__}",
+                error=str(e),
+                traceback=traceback.format_exc(),
+                exc_info=True,
+                extra={
+                    "function": func.__qualname__,
+                    "args_count": len(args),
+                    "kwargs_keys": list(kwargs.keys()) if kwargs else [],
+                }
+            )
+            raise
+    return wrapper
+
+
 def manage_metrics(
     success_metric_name: str = "execution_success",
     failure_metric_name: str = "execution_failure",

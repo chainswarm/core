@@ -18,7 +18,7 @@ from chainswarm_core.observability.metrics import (
     setup_metrics,
     shutdown_metrics_servers,
 )
-from chainswarm_core.observability.decorators import manage_metrics
+from chainswarm_core.observability.decorators import log_errors, manage_metrics
 
 __all__ = [
     "generate_correlation_id",
@@ -35,5 +35,6 @@ __all__ = [
     "get_metrics_registry",
     "setup_metrics",
     "shutdown_metrics_servers",
+    "log_errors",
     "manage_metrics",
 ]

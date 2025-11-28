@@ -169,6 +169,18 @@ class PatternRoles:
     ACTIVATION_HOP = "activation_hop"
     DORMANT_EXIT = "dormant_exit"
 
+    # Phase 4: Proximity risk roles
+    SANCTIONED_ENTITY = "sanctioned_entity"
+    EXPLOIT_ATTACKER = "exploit_attacker"
+    MIXER_SERVICE = "mixer_service"
+    DARKNET_MARKET = "darknet_market"
+    HIGH_RISK_ADDRESS = "high_risk_address"
+    IMMEDIATE_COUNTERPARTY = "immediate_counterparty"
+    SECOND_HOP_COUNTERPARTY = "second_hop_counterparty"
+    THIRD_HOP_COUNTERPARTY = "third_hop_counterparty"
+    DISTANT_COUNTERPARTY = "distant_counterparty"
+    BENIGN_COUNTERPARTY = "benign_counterparty"
+
     # Mutation/noise roles
     NOISE = "noise"
     UNKNOWN = "unknown"
