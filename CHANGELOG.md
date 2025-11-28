@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5] - 2025-11-28
+
+### Added
+
+- **Jobs module** (`chainswarm_core.jobs`):
+  - `create_celery_app(name, autodiscover, beat_schedule_path)` - Celery app factory with loguru integration
+  - `load_beat_schedule(schedule_path)` - Load beat schedule from JSON with cron string conversion
+  - `run_dev_worker(celery_app)` - Run beat + worker in development mode
+  - `InterceptHandler` - Redirect stdlib logging to loguru
+  - `BaseTask` - Abstract base class for Celery tasks with `@log_errors` decorator
+  - `BaseTaskContext` - Base dataclass for task context (network, processing_date, etc.)
+  - `BaseTaskResult` - Base dataclass for task results
+
+### Dependencies
+
+- Added `celery[redis]>=5.3.0`
+
 ## [0.1.4] - 2025-11-28
 
 ### Added

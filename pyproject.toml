@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "chainswarm-core"
-version = "0.1.4"
+version = "0.1.5"
 description = "Shared constants and utilities for ChainSwarm blockchain analytics projects"
 readme = "README.md"
 license = "Apache-2.0"
@@ -23,6 +23,7 @@ classifiers = [
 ]
 
 dependencies = [
+    "celery[redis]>=5.3.0",
     "clickhouse-connect>=0.10.0",
     "loguru>=0.7.0",
     "pydantic>=2.0.0",

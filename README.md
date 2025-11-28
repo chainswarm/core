@@ -16,6 +16,7 @@ Shared constants and utilities for ChainSwarm blockchain analytics projects.
 - **Pattern detection constants** - Pattern types, detection methods, role classifications
 - **Database utilities** - ClickHouse repository base class and row conversion utilities
 - **Observability** - Logging, metrics (Prometheus), and graceful shutdown
+- **Celery jobs** - Celery app factory, base task class, loguru integration
 
 This package eliminates code duplication across ChainSwarm projects including:
 - `data-pipeline`
@@ -245,6 +246,67 @@ from chainswarm_core.observability import manage_metrics
 @manage_metrics(success_metric_name="task_success", failure_metric_name="task_failure")
 def run_task():
     pass
+```
+
+### `chainswarm_core.jobs`
+
+Celery infrastructure with loguru integration and JSON beat schedule loading.
+
+#### Create Celery App
+
+```python
+from chainswarm_core.jobs import create_celery_app
+
+celery_app = create_celery_app(
+    name="my-service-jobs",
+    autodiscover=["packages.jobs.tasks"],
+    beat_schedule_path="packages/jobs/beat_schedule.json",
+)
+```
+
+#### Define Tasks
+
+```python
+from chainswarm_core.jobs import BaseTask, BaseTaskContext, BaseTaskResult
+from typing import Any, Dict
+
+class MyTask(BaseTask):
+    name = "my_task"
+
+    def execute_task(self, context: Dict[str, Any]) -> Dict[str, Any]:
+        ctx = BaseTaskContext(**context)
+        return BaseTaskResult(
+            network=ctx.network,
+            status="success",
+            processing_date=ctx.processing_date,
+        ).__dict__
+
+my_task = celery_app.register_task(MyTask())
+```
+
+#### Beat Schedule JSON
+
+```json
+{
+  "my-task-every-hour": {
+    "task": "packages.jobs.tasks.my_task",
+    "schedule": "0 * * * *",
+    "args": [{"network": "torus", "processing_date": "2024-01-01"}]
+  }
+}
+```
+
+Cron strings are automatically converted to `crontab()` objects.
+
+#### Development Worker
+
+```python
+from chainswarm_core.jobs import create_celery_app, run_dev_worker
+
+celery_app = create_celery_app("my-service", ["packages.jobs.tasks"])
+
+if __name__ == "__main__":
+    run_dev_worker(celery_app)
 ```
 
 ## Migration Guide
