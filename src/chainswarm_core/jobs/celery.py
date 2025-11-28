@@ -40,6 +40,9 @@ def load_beat_schedule(schedule_path: Optional[str] = None) -> Dict[str, Any]:
     if schedule_path is None:
         return {}
     
+    if not os.path.exists(schedule_path):
+        return {}
+    
     try:
         with open(schedule_path, 'r') as f:
             schedule = json.load(f)
@@ -71,6 +74,15 @@ def load_beat_schedule(schedule_path: Optional[str] = None) -> Dict[str, Any]:
             filtered_schedule[task_name] = task_config
         
         return filtered_schedule
+    except json.JSONDecodeError as e:
+        logger.error(
+            "Invalid JSON in beat_schedule.json",
+            extra={
+                "error": str(e),
+                "schedule_path": schedule_path
+            }
+        )
+        return {}
     except Exception as e:
         logger.error(
             "Failed to load beat_schedule.json",

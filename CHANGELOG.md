@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.7] - 2025-11-28
+
+### Fixed
+
+- **Observability logging** (`chainswarm_core.observability.setup_logger`):
+  - Logs directory now correctly resolves to project root by searching for markers (pyproject.toml, requirements.txt, .git, packages) instead of using current working directory which may differ when running scripts with absolute paths
+
+- **Jobs celery** (`chainswarm_core.jobs.load_beat_schedule`):
+  - Beat schedule loading no longer logs ERROR when file doesn't exist (this is expected behavior when no schedule is configured)
+  - Silently returns empty schedule if file not found
+  - Only logs ERROR for actual issues like invalid JSON
+
 ## [0.1.6] - 2025-11-28
 
 ### Added

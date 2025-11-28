@@ -25,6 +25,24 @@ def set_correlation_id(correlation_id: str):
     _correlation_context.correlation_id = correlation_id
 
 
+def _find_project_root() -> str:
+    markers = ['pyproject.toml', 'requirements.txt', '.git', 'packages']
+    
+    start_dir = os.getcwd()
+    current = start_dir
+    
+    for _ in range(10):
+        for marker in markers:
+            if os.path.exists(os.path.join(current, marker)):
+                return current
+        parent = os.path.dirname(current)
+        if parent == current:
+            break
+        current = parent
+    
+    return start_dir
+
+
 def setup_logger(service_name: str, logs_dir: Optional[str] = None) -> str:
     def patch_record(record):
         record["extra"]["service"] = service_name
@@ -38,7 +56,8 @@ def setup_logger(service_name: str, logs_dir: Optional[str] = None) -> str:
         logs_dir = os.environ.get('LOGS_DIR')
     
     if logs_dir is None:
-        logs_dir = os.path.join(os.getcwd(), "logs")
+        project_root = _find_project_root()
+        logs_dir = os.path.join(project_root, "logs")
 
     os.makedirs(logs_dir, exist_ok=True)
 
