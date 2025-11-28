@@ -207,12 +207,6 @@ pip install -e ".[dev]"
 
 # Run tests
 pytest tests/ -v
-
-# Run linter
-ruff check src/ tests/
-
-# Run formatter
-black src/ tests/
 ```
 
 ### Running Tests
@@ -231,7 +225,6 @@ pytest tests/test_constants/test_networks.py -v
 ## CI/CD
 
 - **CI**: Runs on every push and PR to `main`
-  - Linting with Ruff and Black
   - Tests on Python 3.13
   
 - **Publish**: Manual workflow dispatch to publish to PyPI
@@ -243,7 +236,7 @@ pytest tests/test_constants/test_networks.py -v
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
-4. Run tests and linting
+4. Run tests
 5. Commit your changes (`git commit -m 'Add amazing feature'`)
 6. Push to the branch (`git push origin feature/amazing-feature`)
 7. Open a Pull Request
