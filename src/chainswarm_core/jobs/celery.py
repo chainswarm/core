@@ -50,10 +50,6 @@ def load_beat_schedule(schedule_path: Optional[str] = None) -> Dict[str, Any]:
         filtered_schedule = {}
         for task_name, task_config in schedule.items():
             if not isinstance(task_config, dict):
-                logger.debug(
-                    f"Skipping non-dict entry in beat schedule",
-                    extra={"task_name": task_name, "type": type(task_config).__name__}
-                )
                 continue
                 
             if 'args' in task_config and isinstance(task_config['args'], list):

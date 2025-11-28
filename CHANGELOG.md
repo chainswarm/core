@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.8] - 2025-11-28
+
+### Fixed
+
+- **Jobs celery** (`chainswarm_core.jobs.load_beat_schedule`):
+  - Removed DEBUG log when skipping non-dict entries in beat schedule (e.g., `_comment` fields). Non-dict entries are now silently ignored to avoid logs appearing before logger is configured.
+
 ## [0.1.7] - 2025-11-28
 
 ### Fixed
