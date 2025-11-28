@@ -48,6 +48,9 @@ include = ["/src"]
 [tool.hatch.build.targets.wheel]
 packages = ["src/chainswarm_core"]
 
+[tool.hatch.build.targets.wheel.force-include]
+"src/chainswarm_core/schema/core" = "chainswarm_core/schema/core"
+
 [tool.black]
 line-length = 100
 target-version = ["py313"]

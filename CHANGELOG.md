@@ -25,10 +25,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Helper functions: `get_address_type_risk_level()`, `is_high_risk_address_type()`, etc.
 - **Database module** (`chainswarm_core.db`):
   - `BaseRepository` - abstract base class for ClickHouse repositories
+  - `ClientFactory` - thread-safe ClickHouse client factory with connection pooling
+  - `BaseMigrateSchema` - base class for database migrations with core schema support
+  - `create_database()` - create ClickHouse database if not exists
+  - `truncate_table()` - truncate a ClickHouse table
+  - `get_connection_params_from_env()` - get ClickHouse connection params from environment
+  - `apply_schema_content()` - apply SQL schema from string content
+  - `apply_schema_file()` - apply SQL schema from file path
   - `row_to_dict()` - convert ClickHouse row tuple to dictionary
   - `convert_clickhouse_enum()` - generic ClickHouse enum converter
   - `clickhouse_row_to_pydantic()` - convert ClickHouse row to Pydantic model
   - `rows_to_pydantic_list()` - convert multiple rows to Pydantic models
+- **Schema module** (`chainswarm_core.schema`):
+  - `get_core_schema_dir()` - get path to core SQL schema files
+  - `list_core_schemas()` - list available core schema files
+  - `read_core_schema()` - read core schema file content
+  - Core SQL schemas included in package:
+    - `core_assets.sql` - assets table schema
+    - `core_asset_prices.sql` - asset prices table schema
+    - `core_transfers.sql` - transfers table schema
+    - `core_address_labels.sql` - address labels table schema
 - **Logging module** (placeholder for future expansion)
 - GitHub Actions CI/CD workflows
 - Comprehensive test suite
