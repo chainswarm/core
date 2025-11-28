@@ -15,6 +15,7 @@ Shared constants and utilities for ChainSwarm blockchain analytics projects.
 - **Address classifications** - Address types, trust levels, risk mappings
 - **Pattern detection constants** - Pattern types, detection methods, role classifications
 - **Database utilities** - ClickHouse repository base class and row conversion utilities
+- **Observability** - Logging, metrics (Prometheus), and graceful shutdown
 
 This package eliminates code duplication across ChainSwarm projects including:
 - `data-pipeline`
@@ -164,6 +165,86 @@ class MyModel(BaseModel):
 rows = [(1, "first"), (2, "second")]
 columns = ["id", "name"]
 models = rows_to_pydantic_list(MyModel, rows, columns)
+```
+
+### `chainswarm_core.observability`
+
+Unified logging, metrics, and shutdown handling.
+
+#### Logging
+
+```python
+from chainswarm_core.observability import (
+    setup_logger,
+    generate_correlation_id,
+    get_correlation_id,
+    set_correlation_id,
+)
+
+setup_logger("my-service")
+
+correlation_id = generate_correlation_id()
+set_correlation_id(correlation_id)
+
+from loguru import logger
+logger.info("Processing request")
+```
+
+#### Graceful Shutdown
+
+```python
+from chainswarm_core.observability import (
+    terminate_event,
+    install_shutdown_handlers,
+)
+
+install_shutdown_handlers()
+
+while not terminate_event.is_set():
+    process_batch()
+```
+
+#### Prometheus Metrics
+
+```python
+from chainswarm_core.observability import (
+    setup_metrics,
+    get_metrics_registry,
+    MetricsRegistry,
+    DURATION_BUCKETS,
+)
+
+PORT_MAPPING = {
+    "my-service-indexer": 9101,
+    "my-service-api": 9200,
+}
+
+metrics = setup_metrics("my-service-indexer", port_mapping=PORT_MAPPING)
+
+blocks_counter = metrics.create_counter(
+    "blocks_processed_total",
+    "Total blocks processed",
+    labelnames=["network"]
+)
+blocks_counter.labels(network="torus").inc()
+
+processing_time = metrics.create_histogram(
+    "block_processing_seconds",
+    "Block processing duration",
+    buckets=DURATION_BUCKETS
+)
+with processing_time.time():
+    process_block()
+```
+
+#### Metrics Decorator
+
+```python
+from chainswarm_core.observability import manage_metrics
+
+@manage_metrics(success_metric_name="task_success", failure_metric_name="task_failure")
+def run_task():
+    pass
 ```
 
 ## Migration Guide

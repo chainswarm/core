@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4] - 2025-11-28
+
+### Added
+
+- **Observability module** (`chainswarm_core.observability`):
+  - `setup_logger(service_name, logs_dir)` - Loguru setup with JSON file logging and console output
+  - `generate_correlation_id()` - Generate unique correlation IDs for request tracing
+  - `get_correlation_id()` / `set_correlation_id()` - Thread-local correlation ID storage
+  - `terminate_event` - Global threading.Event for graceful shutdown
+  - `shutdown_handler(signum, frame)` - Signal handler for SIGINT/SIGTERM
+  - `install_shutdown_handlers()` - Register signal handlers (call manually to avoid FastAPI conflicts)
+  - `MetricsRegistry` - Prometheus metrics registry with common metrics (health, errors, uptime)
+  - `setup_metrics(service_name, port_mapping)` - Setup Prometheus metrics server
+  - `get_metrics_registry(service_name)` - Get existing metrics registry
+  - `shutdown_metrics_servers()` - Shutdown all metrics servers
+  - `manage_metrics(success_metric, failure_metric)` - Decorator for automatic metric recording
+  - `DURATION_BUCKETS`, `SIZE_BUCKETS`, `COUNT_BUCKETS` - Standard histogram buckets
+
+### Changed
+
+- Updated `clickhouse-connect` requirement to `>=0.10.0`
+- Replaced logging placeholder with full observability module
+
+### Dependencies
+
+- Added `prometheus-client>=0.19.0`
+- Added `python-dotenv>=1.0.0`
+
 ## [0.1.3] - 2025-11-28
 
 ### Added

@@ -1,11 +1,7 @@
-"""ChainSwarm Core - Shared constants and utilities for ChainSwarm projects."""
+__version__ = "0.1.4"
 
-__version__ = "0.1.0"
-
-# Core constant that all projects use
 DEFAULT_ASSET_CONTRACT = "native"
 
-# Re-export commonly used items for convenience
 from chainswarm_core.constants import (
     AddressTypes,
     Network,
@@ -26,25 +22,54 @@ from chainswarm_core.schema import (
     list_core_schemas,
     read_core_schema,
 )
+from chainswarm_core.observability import (
+    COUNT_BUCKETS,
+    DURATION_BUCKETS,
+    SIZE_BUCKETS,
+    MetricsRegistry,
+    generate_correlation_id,
+    get_correlation_id,
+    get_metrics_registry,
+    install_shutdown_handlers,
+    manage_metrics,
+    set_correlation_id,
+    setup_logger,
+    setup_metrics,
+    shutdown_handler,
+    shutdown_metrics_servers,
+    terminate_event,
+)
 
 __all__ = [
     "__version__",
     "DEFAULT_ASSET_CONTRACT",
-    # Constants
     "NetworkType",
     "Network",
     "AddressTypes",
     "TrustLevels",
     "RiskLevels",
     "Severities",
-    # Database
     "BaseRepository",
     "BaseMigrateSchema",
     "ClientFactory",
     "create_database",
     "get_connection_params_from_env",
-    # Schema utilities
     "get_core_schema_dir",
     "list_core_schemas",
     "read_core_schema",
+    "COUNT_BUCKETS",
+    "DURATION_BUCKETS",
+    "SIZE_BUCKETS",
+    "MetricsRegistry",
+    "generate_correlation_id",
+    "get_correlation_id",
+    "get_metrics_registry",
+    "install_shutdown_handlers",
+    "manage_metrics",
+    "set_correlation_id",
+    "setup_logger",
+    "setup_metrics",
+    "shutdown_handler",
+    "shutdown_metrics_servers",
+    "terminate_event",
 ]
