@@ -75,7 +75,7 @@ def get_connection_params(
         "port": _get_env("PORT", "8123"),
         "database": database,
         "user": _get_env("USER", "default"),
-        "password": _get_env("PASSWORD", ""),
+        "password": _get_env("PASSWORD", "password1234"),
         "max_execution_time": int(_get_env("MAX_EXECUTION_TIME", "1800")),
         "max_query_size": int(_get_env("MAX_QUERY_SIZE", "5000000")),
     }

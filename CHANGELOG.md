@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2025-11-28
+
+### Added
+
+- Documentation and usage examples for `BaseMigrateSchema` class
+- Example implementation pattern for project-specific `MigrateSchema` subclasses
+
 ## [0.1.2] - 2025-11-28
 
 ### Added
