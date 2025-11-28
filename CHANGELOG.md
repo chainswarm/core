@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2025-11-28
+
+### Added
+
+- Added unified `get_connection_params(network, database_prefix)` function for ClickHouse connections
+  - Supports network-prefixed env vars (e.g., `TORUS_CLICKHOUSE_HOST`) with fallback to generic (`CLICKHOUSE_HOST`)
+  - Database naming: `get_connection_params("torus", "analytics")` → database = `analytics_torus`
+  - Works for all projects: data-pipeline, analytics-pipeline, chain-synthetics, subnet, etc.
+
 ## [0.1.1] - 2025-11-28
 
 ### Added

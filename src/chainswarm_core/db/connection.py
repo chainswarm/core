@@ -11,6 +11,76 @@ from clickhouse_connect import get_client
 from clickhouse_connect.driver import Client
 
 
+def get_connection_params(
+    network: str | None = None,
+    database_prefix: str | None = None,
+) -> dict[str, Any]:
+    """
+    Get ClickHouse connection parameters from environment variables.
+    
+    Environment variable resolution order (for each param):
+    1. {NETWORK}_CLICKHOUSE_{PARAM} (e.g., TORUS_CLICKHOUSE_HOST) - if network provided
+    2. CLICKHOUSE_{PARAM} (e.g., CLICKHOUSE_HOST)
+    3. Default value
+    
+    Args:
+        network: Network name (e.g., 'torus', 'bitcoin'). Used for:
+                 - Network-prefixed env vars (TORUS_CLICKHOUSE_HOST)
+                 - Default database name if no prefix
+        database_prefix: If provided with network, database = f"{prefix}_{network}".
+                        Examples: "analytics", "synthetics", "risk_scoring"
+    
+    Returns:
+        Dict with connection params: host, port, database, user, password,
+        max_execution_time, max_query_size
+    
+    Examples:
+        # data-pipeline: database = "torus" (or CLICKHOUSE_DATABASE)
+        get_connection_params(network="torus")
+        
+        # analytics-pipeline: database = "analytics_torus"
+        get_connection_params(network="torus", database_prefix="analytics")
+        
+        # chain-synthetics: database = "synthetics_torus"
+        get_connection_params(network="torus", database_prefix="synthetics")
+        
+        # subnet/miners with per-network env: tries TORUS_CLICKHOUSE_HOST first
+        get_connection_params(network="torus")
+        
+        # No network (uses CLICKHOUSE_DATABASE or "default")
+        get_connection_params()
+    """
+    
+    def _get_env(param: str, default: str) -> str:
+        """Get env var with network-prefix fallback."""
+        if network:
+            # Try TORUS_CLICKHOUSE_HOST first
+            network_key = f"{network.upper()}_CLICKHOUSE_{param}"
+            val = os.getenv(network_key)
+            if val is not None:
+                return val
+        # Fall back to CLICKHOUSE_HOST
+        return os.getenv(f"CLICKHOUSE_{param}", default)
+    
+    # Build database name
+    if database_prefix and network:
+        database = f"{database_prefix}_{network}"
+    elif network:
+        database = _get_env("DATABASE", network)
+    else:
+        database = _get_env("DATABASE", "default")
+    
+    return {
+        "host": _get_env("HOST", "localhost"),
+        "port": _get_env("PORT", "8123"),
+        "database": database,
+        "user": _get_env("USER", "default"),
+        "password": _get_env("PASSWORD", ""),
+        "max_execution_time": int(_get_env("MAX_EXECUTION_TIME", "1800")),
+        "max_query_size": int(_get_env("MAX_QUERY_SIZE", "5000000")),
+    }
+
+
 def create_database(connection_params: dict[str, Any]) -> None:
     """
     Create a database if it doesn't exist.
