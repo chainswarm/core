@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2025-11-28
+
+### Added
+
+- Added `loguru` as a required dependency for logging
+
+### Changed
+
+- Removed linting from CI (black, ruff, mypy removed from dev dependencies)
+- Simplified CI workflow to run only tests
+
+### Fixed
+
+- Fixed wheel build duplicate filename issue by removing redundant force-include config
+
 ## [0.1.0] - 2025-11-28
 
 ### Added
