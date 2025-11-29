@@ -5,7 +5,6 @@ from chainswarm_core.db.client_factory import ClientFactory
 from chainswarm_core.db.connection import (
     create_database,
     get_connection_params,
-    get_connection_params_from_env,
     truncate_table,
 )
 from chainswarm_core.db.migrations import (
@@ -29,7 +28,6 @@ __all__ = [
     "create_database",
     "truncate_table",
     "get_connection_params",
-    "get_connection_params_from_env",  # Legacy, use get_connection_params
     # Migrations
     "BaseMigrateSchema",
     "apply_schema_content",

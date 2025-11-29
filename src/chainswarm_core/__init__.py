@@ -1,4 +1,4 @@
-__version__ = "0.1.4"
+__version__ = "0.1.9"
 
 DEFAULT_ASSET_CONTRACT = "native"
 
@@ -15,7 +15,7 @@ from chainswarm_core.db import (
     BaseMigrateSchema,
     ClientFactory,
     create_database,
-    get_connection_params_from_env,
+    get_connection_params,
 )
 from chainswarm_core.schema import (
     get_core_schema_dir,
@@ -54,7 +54,7 @@ __all__ = [
     "BaseMigrateSchema",
     "ClientFactory",
     "create_database",
-    "get_connection_params_from_env",
+    "get_connection_params",
     "get_core_schema_dir",
     "list_core_schemas",
     "read_core_schema",

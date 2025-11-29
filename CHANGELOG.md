@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.9] - 2025-11-29
+
+### Changed
+
+- **Database connection** (`chainswarm_core.db.get_connection_params`):
+  - Simplified ClickHouse connection parameter resolution - removed network-prefixed env var fallback
+  - Environment variables now use fixed names (no more `TORUS_CLICKHOUSE_HOST` fallback):
+    - `CLICKHOUSE_HOST` (default: `localhost`)
+    - `CLICKHOUSE_PORT` (default: `8123`)
+    - `CLICKHOUSE_DB` (default: `default`)
+    - `CLICKHOUSE_USER` (default: `user`)
+    - `CLICKHOUSE_PASSWORD` (default: `password1234`)
+    - `CLICKHOUSE_MAX_EXECUTION_TIME` (default: `1800`)
+    - `CLICKHOUSE_MAX_QUERY_SIZE` (default: `5000000`)
+  - Database name is now determined solely by `network` and `database_prefix` parameters:
+    - `get_connection_params(network="torus", database_prefix="analytics")` → `analytics_torus`
+    - `get_connection_params(network="torus")` → `torus`
+    - `get_connection_params()` → uses `CLICKHOUSE_DB` env var or `default`
+
+### Removed
+
+- `get_connection_params_from_env()` function removed - use `get_connection_params()` instead
+
 ## [0.1.8] - 2025-11-28
 
 ### Fixed
