@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.11] - 2025-11-30
+
+### Changed
+
+- **Database migrations** (`chainswarm_core.db.BaseMigrateSchema`):
+  - Simplified `BaseMigrateSchema` class - removed all core schema references
+  - Removed `CORE_SCHEMAS` class variable
+  - Removed `get_core_schema_dir()` method
+  - Removed `run_core_migrations()` method
+  - Kept only `run_schemas_from_dir(schema_files, schema_dir)` utility method
+  - Each project now defines its own schema list and migration logic via subclass
+
 ## [0.1.10] - 2025-11-30
 
 ### Removed

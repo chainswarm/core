@@ -1,8 +1,8 @@
 """
 Schema migration utilities for ClickHouse.
 
-This module provides a base class for managing ClickHouse schema migrations,
-with support for bundled core schemas and project-specific schemas.
+This module provides a base class for managing ClickHouse schema migrations.
+Each project defines its own schema files and migration logic.
 """
 
 import io
@@ -99,25 +99,25 @@ class BaseMigrateSchema:
     """
     Base schema migration manager.
     
-    Subclass in each project to add project-specific migrations while
-    reusing core migrations from chainswarm-core.
+    Subclass in each project to define project-specific schemas.
+    Each project maintains its own schema files and migration logic.
     
     Example:
         >>> class MigrateSchema(BaseMigrateSchema):
-        ...     def run_project_migrations(self):
-        ...         local_dir = Path(__file__).parent.parent / "schema"
-        ...         self.run_schemas_from_dir([
-        ...             "my_table.sql",
-        ...         ], local_dir)
+        ...     core_schemas = [
+        ...         "core_transfers.sql",
+        ...         "core_money_flows.sql",
+        ...     ]
+        ...
+        ...     def get_project_schema_dir(self) -> Path:
+        ...         return Path(__file__).parent / "schema"
+        ...
+        ...     def run_data_migrations(self) -> None:
+        ...         self.run_schemas_from_dir(
+        ...             self.core_schemas,
+        ...             self.get_project_schema_dir()
+        ...         )
     """
-    
-    # Core schemas bundled with chainswarm-core
-    CORE_SCHEMAS = [
-        "core_assets.sql",
-        "core_asset_prices.sql",
-        "core_transfers.sql",
-        "core_address_labels.sql",
-    ]
     
     def __init__(self, client: Client):
         """
@@ -128,46 +128,13 @@ class BaseMigrateSchema:
         """
         self.client = client
     
-    def get_core_schema_dir(self) -> Path:
-        """
-        Get path to core schemas bundled with chainswarm-core.
-        
-        Returns:
-            Path to the core schema directory
-        """
-        return Path(__file__).parent.parent / "schema" / "core"
-    
-    def run_core_migrations(self) -> None:
-        """
-        Run shared core migrations from chainswarm-core package.
-        
-        These are the base tables needed by most projects:
-        - core_assets
-        - core_asset_prices  
-        - core_transfers
-        - core_address_labels
-        """
-        schema_dir = self.get_core_schema_dir()
-        
-        for schema_name in self.CORE_SCHEMAS:
-            schema_path = schema_dir / schema_name
-            try:
-                if schema_path.exists():
-                    apply_schema_file(self.client, schema_path)
-                    logger.info(f"Applied core schema: {schema_name}")
-                else:
-                    logger.warning(f"Core schema not found: {schema_path}")
-            except Exception as e:
-                logger.error(f"Failed to apply core schema {schema_name}: {e}")
-                raise
-    
     def run_schemas_from_dir(
-        self, 
-        schema_files: list[str], 
+        self,
+        schema_files: list[str],
         schema_dir: Path
     ) -> None:
         """
-        Run migrations from a local directory (project-specific schemas).
+        Run migrations from a directory.
         
         Args:
             schema_files: List of schema file names to apply
