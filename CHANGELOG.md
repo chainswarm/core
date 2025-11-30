@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.10] - 2025-11-30
+
+### Removed
+
+- **Schema module** (`chainswarm_core.schema`):
+  - Removed all core SQL schema files (`core_transfers.sql`, `core_assets.sql`, `core_asset_prices.sql`, `core_address_labels.sql`)
+  - Each project (data-pipeline, analytics-pipeline, etc.) should now maintain its own schema definitions
+  - This avoids schema coupling and conflicts between different projects with different column requirements
+  - Functions `get_core_schema_dir()`, `list_core_schemas()`, `read_core_schema()` are now deprecated and return empty/raise errors
+
 ## [0.1.9] - 2025-11-29
 
 ### Changed

@@ -1,7 +1,11 @@
 """
 Schema resources for chainswarm-core.
 
-This module provides utilities for accessing bundled SQL schema files.
+NOTE: Core SQL schemas have been removed as of v0.1.10.
+Each project (data-pipeline, analytics-pipeline, etc.) should maintain
+its own schema definitions to avoid coupling and schema conflicts.
+
+This module is kept for backward compatibility but functions are deprecated.
 """
 
 from pathlib import Path
@@ -9,41 +13,38 @@ from pathlib import Path
 
 def get_core_schema_dir() -> Path:
     """
-    Get path to core schemas bundled with chainswarm-core.
+    DEPRECATED: Core schemas have been removed in v0.1.10.
+    
+    Each project should maintain its own schema definitions.
     
     Returns:
-        Path to the 'core' schema directory
+        Path to the (now empty/non-existent) 'core' schema directory
     """
     return Path(__file__).parent / "core"
 
 
 def list_core_schemas() -> list[str]:
     """
-    List all available core schema files.
+    DEPRECATED: Core schemas have been removed in v0.1.10.
     
     Returns:
-        List of schema file names (e.g., ["core_assets.sql", "core_transfers.sql"])
+        Empty list (no core schemas bundled)
     """
-    schema_dir = get_core_schema_dir()
-    if not schema_dir.exists():
-        return []
-    return [f.name for f in schema_dir.iterdir() if f.name.endswith(".sql")]
+    return []
 
 
 def read_core_schema(schema_name: str) -> str:
     """
-    Read content of a core schema file.
+    DEPRECATED: Core schemas have been removed in v0.1.10.
     
     Args:
-        schema_name: Schema file name (e.g., "core_assets.sql")
-        
-    Returns:
-        SQL content as string
+        schema_name: Schema file name
         
     Raises:
-        FileNotFoundError: If schema file doesn't exist
+        FileNotFoundError: Always raised (no core schemas exist)
     """
-    schema_path = get_core_schema_dir() / schema_name
-    if not schema_path.exists():
-        raise FileNotFoundError(f"Core schema not found: {schema_name}")
-    return schema_path.read_text(encoding="utf-8")
+    raise FileNotFoundError(
+        f"Core schema '{schema_name}' not found. "
+        "Core schemas have been removed in v0.1.10. "
+        "Each project should maintain its own schema definitions."
+    )
