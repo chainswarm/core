@@ -34,12 +34,18 @@ def _setup_loguru(**kwargs):
 
 
 def load_beat_schedule(schedule_path: Optional[str] = None) -> Dict[str, Any]:
-    if schedule_path is None:
-        schedule_path = os.getenv('CELERY_BEAT_SCHEDULE_PATH')
-    
+
+    env_path = os.getenv('CELERY_BEAT_SCHEDULE_PATH')
+    if env_path and os.path.exists(env_path):
+        logger.info(
+            "Using custom beat schedule from environment",
+            extra={"schedule_path": env_path}
+        )
+        schedule_path = env_path
+
     if schedule_path is None:
         return {}
-    
+
     if not os.path.exists(schedule_path):
         return {}
     

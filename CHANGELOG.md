@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.12] - 2025-12-02
+
+- **Celery configuration**
+  - Added NETWORK env variable loading if network from args is not provided.
+
+### Changed
+
 ## [0.1.11] - 2025-11-30
 
 ### Changed
