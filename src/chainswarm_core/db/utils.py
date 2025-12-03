@@ -19,7 +19,13 @@ def row_to_dict(row: tuple, column_names: List[str]) -> Dict[str, Any]:
     Returns:
         Dictionary mapping column names to values
     """
-    return dict(zip(column_names, row))
+    result = {}
+    for name, value in zip(column_names, row):
+        if isinstance(value, Decimal):
+            result[name] = format(value, 'f')
+        else:
+            result[name] = value
+    return result
 
 
 def convert_clickhouse_enum(enum_class: Type[IntEnum], value: Any) -> IntEnum | None:
