@@ -1,6 +1,7 @@
 """ClickHouse row conversion utilities."""
 
 from enum import IntEnum
+from decimal import Decimal
 from typing import Any, Dict, List, Type, TypeVar, Union
 
 from pydantic import BaseModel
