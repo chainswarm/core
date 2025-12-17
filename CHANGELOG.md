@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.14] - 2025-12-17
+
+### Added
+
+- **Observability module** (`chainswarm_core.observability`):
+  - `async_wait_for_termination(timeout, check_interval)` - Async-compatible wait function for graceful shutdown in asyncio contexts. Unlike `terminate_event.wait()` which blocks the entire event loop, this function uses `asyncio.sleep()` in a loop, allowing signal handlers to be processed.
+
 ## [0.1.13] - 2025-12-02
 
 - **Db Utils configuration**

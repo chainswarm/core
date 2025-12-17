@@ -5,6 +5,7 @@ from chainswarm_core.observability.logging import (
     setup_logger,
 )
 from chainswarm_core.observability.shutdown import (
+    async_wait_for_termination,
     install_shutdown_handlers,
     shutdown_handler,
     terminate_event,
@@ -25,6 +26,7 @@ __all__ = [
     "get_correlation_id",
     "set_correlation_id",
     "setup_logger",
+    "async_wait_for_termination",
     "install_shutdown_handlers",
     "shutdown_handler",
     "terminate_event",
